@@ -47,7 +47,7 @@
   var tilesNum;
   var bg;
  
-  var resourceNames = ['dishes.png','ironing.png','laundry.png','sweep.png','trash.png','vacuum.png','windows.png','backcard.svg','background.png', 'bar_home.svg', 'bar_help.svg', 'bar_about.svg', 'bar_previous.svg' , 'bar_next.svg','emptycard.svg','flower_good.svg',];
+  var resourceNames = ['dishes.png','ironing.png','laundry.png','sweep.png','trash.png','vacuum.png','windows.png','backcard.svg','background.svg', 'bar_home.svg', 'bar_help.svg', 'bar_about.svg', 'bar_previous.svg' , 'bar_next.svg','emptycard.svg','flower_good.svg',];
   var soundNames = ['dishesSound.ogg','ironingSound.ogg','laundrySound.ogg','sweepSound.ogg','trashSound.ogg','vacuumSound.ogg','windowsSound.ogg'];
   var numOfCards = 7;
   var resources = [];
@@ -111,11 +111,10 @@
       resources[i].src = 'resource/' + resourceNames[i];
       resources[i].onload = queueFileLoad;
     }
-    bg = new createjs.Bitmap(imgByName('background.png'));
+    bg = new createjs.Bitmap(imgByName('background.svg'));
     
     bg.scaleX = stage.canvas.width / bg.image.width;
     bg.scaleY = stage.canvas.height / bg.image.height;
-    bg.alpha = 0.5;
     stage.addChild(bg);
     stage.update();
     window.addEventListener('resize', resize, false);
@@ -160,7 +159,7 @@
       });
       stage.addChild(menubar[i]);
     }
-    lvlText = new createjs.Text('1', '20px Arial', 'white');
+    lvlText = new createjs.Text('1', '20px Arial', '#92063E');
     lvlText.textAlign = 'center';
     lvlText.textBaseline = 'middle';
 
@@ -198,7 +197,19 @@
   var bbs = stage.canvas.height / 10;  // bar button size
   var bbm = bbs / 5;  // bar button margin
   // TODO: local/global variables, eslint...
-  for (i = 0; i < 5; i++) {
+  for (i = 0; i < 3; i++) {
+    // Leave one space for the level
+    menubar[i].scaleX = bbs / menubar[i].image.width;
+    menubar[i].scaleY = bbs / menubar[i].image.height;
+    menubar[i].regX = menubar[i].image.width / 2;
+    menubar[i].regY = menubar[i].image.height / 2;
+    menubar[i].x = (i + 1)*bbm + bbs/2 + i*bbs;
+    menubar[i].y = stage.canvas.height - bbm - bbs/2;
+    // These copies are used to preserve the original scale on mouseover
+    menubar[i].savedscaleX = menubar[i].scaleX;
+    menubar[i].savedscaleY = menubar[i].scaleY;
+  }
+  for (i = 3; i < 5; i++) {
     // Leave one space for the level
     if (i < 4)
       j = i;
@@ -208,24 +219,24 @@
     menubar[i].scaleY = bbs / menubar[i].image.height;
     menubar[i].regX = menubar[i].image.width / 2;
     menubar[i].regY = menubar[i].image.height / 2;
-    menubar[i].x = (j + 1)*bbm + bbs/2 + j*bbs;
+    menubar[i].x = stage.canvas.width/2 + (j + 1)*bbm + 2*bbs + j*bbs;
     menubar[i].y = stage.canvas.height - bbm - bbs/2;
     // These copies are used to preserve the original scale on mouseover
     menubar[i].savedscaleX = menubar[i].scaleX;
     menubar[i].savedscaleY = menubar[i].scaleY;
   }
 
+
   lvlText.text = level + 1;
-  lvlText.x = (4 + 1)*bbm + bbs/2 + 4*bbs;
-  lvlText.y = stage.canvas.height - bbm/2 - bbs/2;
-  lvlText.font = parseInt(2*bbs/2) + 'px Arial';
+  lvlText.x = stage.canvas.width/2  + bbs + 2*bbs + (j-1)*bbs;
+  lvlText.y = stage.canvas.height - bbm - bbs/2;
+  lvlText.font = parseInt(2*bbs/2) + "px Arial";
 
   // If level is single digit, move lvlText and bar_previous a bit left
   if (level + 1 < 10) {
     lvlText.x -= bbs/4;
     menubar[4].x -= bbs/2;
   }
-
     imgSuccess.scaleY = (2/3) * stage.canvas.height / imgSuccess.image.height;
     imgSuccess.scaleX = imgSuccess.scaleY;
     imgSuccess.regX = imgSuccess.image.width / 2;
@@ -242,8 +253,8 @@
     for (var i=0; i<tilesNum; i++){
       tiles[i].scaleY = scaledHeight / imgByName('backcard.svg').height;
       tiles[i].scaleX = tiles[i].scaleY;
-      tiles[i].openItem.scaleX = tiles[i].scaleX*2/3;
-      tiles[i].openItem.scaleY = tiles[i].scaleY*2/3;
+      tiles[i].openItem.scaleX = tiles[i].scaleX*2;
+      tiles[i].openItem.scaleY = tiles[i].scaleY*2;
     }
     var newWidth = tiles[0].scaleX * tiles[0].image.width;
     //compute leftrightspace
