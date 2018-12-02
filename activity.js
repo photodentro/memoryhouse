@@ -174,10 +174,12 @@ function onCardClick(event){
     animalId = 'a' + event.target.id;
     cardId = event.target.id;
   }
+  if (ge(animalId).style.display == 'none'){
   setAnimation(cardId,'flipit','1s');
   setAnimation(animalId,'flipit','1s')
   checkLastTwo();
   setTimeout(function(){openCard(cardId,animalId)},450);
+  }
 }
 
 
@@ -203,16 +205,14 @@ function checkLastTwo(){
 function openCard(cardId,animalId){
   setAnimation(cardId,'reset','0s');
   setAnimation(animalId,'reset','0s');
-  if (ge(animalId).style.display == "none"){
-    ge(cardId).src = "resource/emptycard.svg";
-    ge(animalId).style.display = "";
-    if (act.player){
-      act.player.pause();
-    }
-    act.player = ge(ge(animalId).audioId);
-    act.player.currentTime = 0;
-    act.player.play();
+  ge(cardId).src = "resource/emptycard.svg";
+  ge(animalId).style.display = "";
+  if (act.player){
+    act.player.pause();
   }
+  act.player = ge(ge(animalId).audioId);
+  act.player.currentTime = 0;
+  act.player.play();
   act.cardsOpen.push([ge(cardId).row,ge(cardId).col]);
   if (act.cardsOpen.length == act.totalCards){
     ge('flowergood').style.display = "block";
