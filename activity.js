@@ -216,8 +216,9 @@ function openCard(animalId,cardId){
 function success(){ 
     ge('balloongood').style.display = "block";
     ge('balloongood').style.position = "fixed";
+    ge('balloongood').style.marginLeft = "auto";
+    ge('balloongood').style.marginRight = "auto";
     ge('balloongood').style.zIndex = 100;
-    ge('balloongood').style.align = "center";
     setAnimation('balloongood','balloon','2s');
     setTimeout(onNext,2000);
 }
